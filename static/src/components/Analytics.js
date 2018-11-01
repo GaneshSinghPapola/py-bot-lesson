@@ -45,15 +45,17 @@ class Analytics extends React.Component {
 
 
     async handleTextChange(e) {
+        let text = e.target.value; 
         if (e.keyCode === 13) {
           const payload = {
             username: this.state.username,
             message: this.state.text
           };
-          const res = await fetch(`${API_URL}/message`,{method:"POST",headers:{"Content-Type":"application/json"},body:payload}) 
+          const res = await fetch(`${API_URL}/dialog`,{method:"POST",headers:
+          {"Content-Type":"application/json",'Access-Control-Allow-Origin':'*'},body:payload}) 
           console.log('res from server is >> ',res)
         } else {
-          this.setState({ text: e.target.value });
+          this.setState({ text });
         }
       }
 
@@ -89,16 +91,16 @@ class Analytics extends React.Component {
 
     <div>
         <div className="row">
-                <div className="col-xs-12">
+                <div className="col-md-8">
                     <div className="chat">
-                        <div className="col-xs-5 col-xs-offset-3">
+                        <div className="col-md-8">
                             <input
                                 type="text"
                                 value={this.state.text}
                                 placeholder="chat here..."
                                 className="form-control"
-                                onChange={this.handleTextChange}
-                                onKeyDown={this.handleTextChange}
+                                onChange={(e)=>this.handleTextChange(e)}
+                                onKeyDown={(e)=>this.handleTextChange(e)}
                             />
                         </div>
 

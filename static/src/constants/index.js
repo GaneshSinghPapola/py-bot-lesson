@@ -1,5 +1,7 @@
-export const URL = 'localhost:5000'
-export const API_URL = 'localhost:5000/api/vi'
+export const URL = 'http://localhost:5000'
+export const API_URL = 'http://localhost:5000/api/vi'
+
+// export const API_URL = 'http://2b388a2f.ngrok.io/api/vi'
 
 export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS';
 export const LOGIN_USER_FAILURE = 'LOGIN_USER_FAILURE';

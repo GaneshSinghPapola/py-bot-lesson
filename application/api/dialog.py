@@ -10,36 +10,39 @@ import dialogflow
 
 
 
-print("pre data /././././. ")
-print(os.getenv('DIALOGFLOW_PROJECT_ID'))
 
 
-project_id = os.getenv('DIALOGFLOW_PROJECT_ID')
+
+project_id = 'testdialog-fbac2'
 pusher_client = pusher.Pusher(
-    app_id=os.getenv('PUSHER_APP_ID'),
-    key=os.getenv('PUSHER_KEY'),
-    secret=os.getenv('PUSHER_SECRET'),
-    cluster=os.getenv('PUSHER_CLUSTER'),
+    # app_id=os.getenv('PUSHER_APP_ID'),
+    # key=os.getenv('PUSHER_KEY'),
+    # secret=os.getenv('PUSHER_SECRET'),
+    # cluster=os.getenv('PUSHER_CLUSTER'),
+    app_id='636446',
+    key='5982c2cccbde01cd2bac',
+    secret='a09713406bc64937f867',
+    cluster='ap2',
     ssl=True)
 
 
 @api.route('/dialog', methods=['POST'])
 def bot():
-    input_text = request.form["message"]
+    input_text = request.get_json()["message"]
+    print("flow_response")
+    print(input_text)
     if input_text:
-        flow_response = detect_intent_texts(
-            project_id, "unique", input_text, 'en')
-        pusher_client.trigger('chat_bot', 'new_message',
-                            {'query': input_text, 'diaglog_message': flow_response})        
-        return flow_response
+          flow_res = detect_intent_texts(project_id, "unique", input_text, 'en')
+          pusher_client.trigger('chat_bot', 'new_message',
+                            {'query': input_text, 'diaglog_message': flow_res})        
+          return jsonify({"message": flow_res}), 200
 
 
 def detect_intent_texts(project_id, session_id, text, language_code):
     session_client = dialogflow.SessionsClient()
     session = session_client.session_path(project_id, session_id)
     if text:
-        text_input = dialogflow.types.TextInput(
-            text=text, language_code=language_code)
+        text_input = dialogflow.types.TextInput(text=text, language_code=language_code)
         query_input = dialogflow.types.QueryInput(text=text_input)
         response = session_client.detect_intent(
             session=session, query_input=query_input)
