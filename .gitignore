@@ -3,3 +3,4 @@ env
 .env
 .flaskenv
 TestDialog-f7005bf4a50d.json
+static
